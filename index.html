@@ -2044,7 +2044,30 @@ function startGame(diffKey) {
   generateWorld(); // builds dungeonRooms for floor 1
   camX = camTargetX = 0;
   camY = camTargetY = 0;
-  enterRoom(0); // enter the start room
+  enterRoom(0);
+
+// AUTO START FIRST WAVE
+setTimeout(() => {
+
+  const startRoom = dungeonRooms[0];
+
+  if (!startRoom || !startRoom.connections) return;
+
+  const nextRoomId =
+    startRoom.connections.n ??
+    startRoom.connections.e ??
+    startRoom.connections.s ??
+    startRoom.connections.w;
+
+  if (nextRoomId !== undefined && nextRoomId !== null) {
+
+    player.x = ROOM_W / 2;
+    player.y = ROOM_H - 20;
+
+    enterRoom(nextRoomId);
+  }
+
+}, 150); // enter the start room
 }
 
 // ---------- Fullscreen helpers ----------
