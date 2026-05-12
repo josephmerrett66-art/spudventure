@@ -1794,38 +1794,10 @@ function onFloorCleared() {
 
   floatTexts.push({ x: ROOM_W/2, y: ROOM_H/2 - 40, text: `🏆 FLOOR ${currentFloor-1} COMPLETE`, life: 4, color: '#f4c47a', size: 24, vy: -12 });
   setTimeout(() => {
-    enterRoom(0);
-    openShop(); // floor-complete bonus shop
-  }, 2500);
-}
+ enterRoom(0);
 
-// Room transition — fade to black, run callback, fade in
-let roomTransitionAlpha = 0;
-let roomTransitionDir = 0; // 1 = fading out, -1 = fading in
-let roomTransitionCallback = null;
-
-function startRoomTransition(callback) {
-  roomTransitionAlpha = 0;
-  roomTransitionDir = 1;
-  roomTransitionCallback = callback;
-}
-
-function updateRoomTransition(dt) {
-  if (roomTransitionDir === 0) return;
-  const speed = 4; // fade speed
-  if (roomTransitionDir === 1) {
-    roomTransitionAlpha = Math.min(1, roomTransitionAlpha + speed * dt);
-    if (roomTransitionAlpha >= 1 && roomTransitionCallback) {
-      roomTransitionCallback();
-      roomTransitionCallback = null;
-      roomTransitionDir = -1;
-    }
-  } else {
-    roomTransitionAlpha = Math.max(0, roomTransitionAlpha - speed * dt);
-    if (roomTransitionAlpha <= 0) roomTransitionDir = 0;
-  }
-}
-
+spawnRoomEnemies();
+waveActive = enemies.length > 0;
 // Legacy stubs — keep for any remaining references
 function generateWorld() {
   dungeonRooms = generateDungeon(currentFloor);
